@@ -6,7 +6,7 @@ const configHeaders = {
   "X-Bin-Meta": "false",
 };
 
-export const boxMagicJsonBinId = "680b8c0b8561e97a500753d0";
+export const boxMagicJsonBinId = "6808da2d8a456b79668f9095";
 
 export async function getBoxMagicJsonBinId(binId = boxMagicJsonBinId) {
   const response = await fetch(`${mainRoute}/b/${binId}`, {
