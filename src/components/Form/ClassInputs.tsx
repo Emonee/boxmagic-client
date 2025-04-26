@@ -1,4 +1,5 @@
 import { Day, Class } from "../../types/jsonBin";
+// import ScheduleClassButton from "./ScheduleClassButton";
 
 type Props = {
   index: number;
@@ -18,6 +19,7 @@ export default function ClassInput({ day, boxMagicClass, index }: Props) {
         />
         {boxMagicClass.hour}:{boxMagicClass.minute} | {boxMagicClass.name}
       </label>
+      {/* <ScheduleClassButton claseId={boxMagicClass.id} day={day} /> */}
       <input
         type="hidden"
         name={`classesByDay.${day}[${index}].id`}
