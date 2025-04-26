@@ -10,8 +10,10 @@ export default function Form() {
 
   function handleSubmit(e: JSX.TargetedSubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
     const formData = formatFormData(e.currentTarget);
+    if (import.meta.env.DEV) return console.log(formData);
+
+    setLoading(true);
     putBoxMagicJsonBinId(formData)
       .then(() => {
         alert("Saved");
