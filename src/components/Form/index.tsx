@@ -28,23 +28,25 @@ export default function Form() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Token
-        <input name="token" value={data.token} />
-      </label>
-      <label>
-        Pago ID
-        <input name="pagoID" value={data.pagoID} data-formatter="Number" />
-      </label>
-      <label>
-        Membresia ID
-        <input
-          name="membresiaID"
-          value={data.membresiaID}
-          data-formatter="Number"
-        />
-      </label>
-      <Days />
+      <section>
+        <label>
+          Token
+          <input name="token" value={data.token} />
+        </label>
+        <label>
+          Pago ID
+          <input name="pagoID" value={data.pagoID} data-formatter="Number" />
+        </label>
+        <label>
+          Membresia ID
+          <input
+            name="membresiaID"
+            value={data.membresiaID}
+            data-formatter="Number"
+          />
+        </label>
+        <Days />
+      </section>
       <button
         type="submit"
         aria-busy={loading ? "true" : "false"}
