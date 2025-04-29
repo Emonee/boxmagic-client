@@ -11,20 +11,22 @@ export default function Days() {
     data: { classesByDay },
   } = useContext(JsonBinDataContext);
   const days = Object.entries(classesByDay);
-  return days.map(
-    ([day, classes]) =>
-      !!classes.length && (
-        <Fragment key={day}>
-          <h3>{daysMapper[+day as Day]}</h3>
-          {classes.map((c, i) => (
-            <ClassInputs
-              key={c.id}
-              day={+day as Day}
-              boxMagicClass={c}
-              index={i}
-            />
-          ))}
-        </Fragment>
-      )
-  );
+  return days
+    .toSorted((a, b) => (b[0] === "0" ? -1 : a[0].localeCompare(b[0]))) // Make sunday last
+    .map(
+      ([day, classes]) =>
+        !!classes.length && (
+          <Fragment key={day}>
+            <h3>{daysMapper[+day as Day]}</h3>
+            {classes.map((c, i) => (
+              <ClassInputs
+                key={c.id}
+                day={+day as Day}
+                boxMagicClass={c}
+                index={i}
+              />
+            ))}
+          </Fragment>
+        )
+    );
 }
