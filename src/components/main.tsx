@@ -5,20 +5,20 @@ import AddClassForm from "./AddClassForm";
 import Form from "./Form";
 
 export default function Main() {
-  const { data, loading, error, refetch } = useQuery({
+  const { data, isFetched, error, refetch } = useQuery({
     queryFn: getBoxMagicJsonBinId,
   });
 
   return (
     <main>
-      {loading && <div aria-busy="true"></div>}
+      {!isFetched && <div aria-busy="true"></div>}
       {error && (
         <>
           <h3>Error</h3>
           <p>{error.message}</p>
         </>
       )}
-      {data && !error && !loading && (
+      {data && !error && isFetched && (
         <JsonBinDataContext.Provider value={{ data, refetch }}>
           <Form />
           <AddClassForm />

@@ -8,7 +8,9 @@ type Params<T> = {
 export function useQuery<T>({ enabled = true, queryFn }: Params<T>) {
   const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [isFetched, setIsFetched] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
   const [refetchState, setRefetchState] = useState(false);
 
   function refetch() {
@@ -28,8 +30,9 @@ export function useQuery<T>({ enabled = true, queryFn }: Params<T>) {
       })
       .finally(() => {
         setLoading(false);
+        !isFetched && setIsFetched(true);
       });
   }, [refetchState]);
 
-  return { data, loading, error, refetch };
+  return { data, loading, error, isFetched, refetch };
 }
