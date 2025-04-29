@@ -18,14 +18,16 @@ export default function Days() {
         !!classes.length && (
           <Fragment key={day}>
             <h3>{daysMapper[+day as Day]}</h3>
-            {classes.map((c, i) => (
-              <ClassInputs
-                key={c.id}
-                day={+day as Day}
-                boxMagicClass={c}
-                index={i}
-              />
-            ))}
+            {classes
+              .toSorted((a, b) => a.hour - b.hour || a.minute - b.minute)
+              .map((c, i) => (
+                <ClassInputs
+                  key={c.id}
+                  day={+day as Day}
+                  boxMagicClass={c}
+                  index={i}
+                />
+              ))}
           </Fragment>
         )
     );

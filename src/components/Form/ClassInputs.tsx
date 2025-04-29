@@ -28,7 +28,9 @@ export default function ClassInput({ day, boxMagicClass, index }: Props) {
             !confirm(
               `Are you sure you want to remove this class?\n${
                 boxMagicClass.name
-              }, ${daysMapper[day]} ${boxMagicClass.hour}:${boxMagicClass.minute
+              }, ${daysMapper[day]} ${boxMagicClass.hour
+                .toString()
+                .padStart(2, "0")}:${boxMagicClass.minute
                 .toString()
                 .padStart(2, "0")} hrs`
             )
