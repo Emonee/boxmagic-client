@@ -1,5 +1,6 @@
 import { Day, Class } from "../../types/jsonBin";
-// import ScheduleClassButton from "./ScheduleClassButton";
+import { useRef } from "preact/hooks";
+import { daysMapper } from "../../consts/daysMapper";
 
 type Props = {
   index: number;
@@ -8,18 +9,47 @@ type Props = {
 };
 
 export default function ClassInput({ day, boxMagicClass, index }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div>
-      <label>
+    <section
+      ref={containerRef}
+      style={{
+        display: "flex",
+        gap: "1rem",
+        alignItems: "center",
+      }}
+    >
+      <button
+        type="button"
+        style={{ margin: 0, padding: "0.25rem 0.5rem" }}
+        onClick={() => {
+          if (
+            !confirm(
+              `Are you sure you want to remove this class?\n${
+                boxMagicClass.name
+              }, ${daysMapper[day]} ${boxMagicClass.hour}:${boxMagicClass.minute
+                .toString()
+                .padStart(2, "0")} hrs`
+            )
+          )
+            return;
+
+          containerRef.current?.remove();
+        }}
+      >
+        Remove
+      </button>
+      <label style={{ margin: 0 }}>
         <input
           type="checkbox"
           role="switch"
           name={`classesByDay.${day}[${index}].active`}
           defaultChecked={boxMagicClass.active}
         />
-        {boxMagicClass.hour}:{boxMagicClass.minute} | {boxMagicClass.name}
+        {boxMagicClass.hour}:{boxMagicClass.minute.toString().padStart(2, "0")}{" "}
+        | {boxMagicClass.name}
       </label>
-      {/* <ScheduleClassButton claseId={boxMagicClass.id} day={day} /> */}
       <input
         type="hidden"
         name={`classesByDay.${day}[${index}].id`}
@@ -43,6 +73,6 @@ export default function ClassInput({ day, boxMagicClass, index }: Props) {
         data-formatter="Number"
         defaultValue={boxMagicClass.minute}
       />
-    </div>
+    </section>
   );
 }

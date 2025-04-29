@@ -13,6 +13,7 @@ export default function AddClassForm() {
     const formData = formatFormData<Class & { day: Day }>(e.currentTarget);
     const { day, ...classData } = formData;
     const boxMagicConfigCopy = structuredClone(data);
+    boxMagicConfigCopy.classesByDay[day] ||= [];
     boxMagicConfigCopy.classesByDay[day].push(classData);
     if (import.meta.env.DEV) return console.log(boxMagicConfigCopy);
 
