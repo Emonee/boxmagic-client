@@ -10,7 +10,9 @@ type Props = {
 };
 
 export default function ScheduleClassButton({ claseId, day }: Props) {
-  const { membresiaID, pagoID, token } = useContext(JsonBinDataContext);
+  const {
+    data: { membresiaID, pagoID, token },
+  } = useContext(JsonBinDataContext);
 
   const onClick = () => {
     const nextDate = getNextDayDate(day);

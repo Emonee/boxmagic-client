@@ -7,7 +7,9 @@ import ClassInputs from "./ClassInputs";
 import { Fragment } from "preact";
 
 export default function Days() {
-  const { classesByDay } = useContext(JsonBinDataContext);
+  const {
+    data: { classesByDay },
+  } = useContext(JsonBinDataContext);
   const days = Object.entries(classesByDay);
   return days.map(
     ([day, classes]) =>

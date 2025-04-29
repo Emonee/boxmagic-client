@@ -4,10 +4,16 @@ const formatters = {
   Number,
 };
 
-export function formatFormData(form: HTMLFormElement) {
-  const data = {} as BoxMagixConfig;
+export function formatFormData<T>(form: HTMLFormElement) {
+  const data = {} as T;
   for (const element of form.elements) {
-    if (!(element instanceof HTMLInputElement)) continue;
+    if (
+      !(
+        element instanceof HTMLInputElement ||
+        element instanceof HTMLSelectElement
+      )
+    )
+      continue;
 
     let finalValue: number | boolean | string | null;
     if (element.type === "checkbox") {

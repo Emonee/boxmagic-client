@@ -1,10 +1,11 @@
 import { JsonBinDataContext } from "../context/JsonBinDataContext";
 import { useQuery } from "../hooks/boxmagic/useQuery";
 import { getBoxMagicJsonBinId } from "../lib/jsonbin";
+import AddClassForm from "./AddClassForm";
 import Form from "./Form";
 
 export default function Main() {
-  const { data, loading, error } = useQuery({
+  const { data, loading, error, refetch } = useQuery({
     queryFn: getBoxMagicJsonBinId,
   });
 
@@ -18,8 +19,9 @@ export default function Main() {
         </>
       )}
       {data && !error && !loading && (
-        <JsonBinDataContext.Provider value={data}>
+        <JsonBinDataContext.Provider value={{ data, refetch }}>
           <Form />
+          <AddClassForm />
         </JsonBinDataContext.Provider>
       )}
     </main>
