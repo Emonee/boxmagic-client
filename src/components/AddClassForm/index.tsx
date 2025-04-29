@@ -1,11 +1,13 @@
 import type { JSX } from "preact";
 import { daysMapper } from "../../consts/daysMapper";
 import { formatFormData } from "../../lib/helpers/form";
-import { useContext } from "preact/hooks";
+import { useContext, useState } from "preact/hooks";
 import { JsonBinDataContext } from "../../context/JsonBinDataContext";
 import { Class, Day } from "../../types/jsonBin";
 import { putBoxMagicJsonBinId } from "../../lib/jsonbin";
+
 export default function AddClassForm() {
+  const [loading, setLoading] = useState(false);
   const { data, refetch } = useContext(JsonBinDataContext);
 
   const onSubmit = (e: JSX.TargetedSubmitEvent<HTMLFormElement>) => {
@@ -17,15 +19,19 @@ export default function AddClassForm() {
     boxMagicConfigCopy.classesByDay[day].push(classData);
     if (import.meta.env.DEV) return console.log(boxMagicConfigCopy);
 
+    setLoading(true);
     putBoxMagicJsonBinId(boxMagicConfigCopy)
       .then(() => {
         alert("Saved");
+        e.currentTarget.reset();
         refetch?.();
       })
       .catch((e) => {
         alert(e.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    e.currentTarget.reset();
   };
 
   return (
@@ -63,7 +69,13 @@ export default function AddClassForm() {
           <input name="active" type="checkbox" />
           Active
         </label>
-        <button type="submit">Add Class</button>
+        <button
+          type="submit"
+          aria-busy={loading ? "true" : "false"}
+          disabled={loading}
+        >
+          Add Class
+        </button>
       </form>
     </>
   );
