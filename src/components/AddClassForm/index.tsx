@@ -12,7 +12,8 @@ export default function AddClassForm() {
 
   const onSubmit = (e: JSX.TargetedSubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = formatFormData<Class & { day: Day }>(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = formatFormData<Class & { day: Day }>(form);
     const { day, ...classData } = formData;
     const boxMagicConfigCopy = structuredClone(data);
     boxMagicConfigCopy.classesByDay[day] ||= [];
@@ -23,7 +24,7 @@ export default function AddClassForm() {
     putBoxMagicJsonBinId(boxMagicConfigCopy)
       .then(() => {
         alert("Saved");
-        e.currentTarget.reset();
+        form.reset();
         refetch?.();
       })
       .catch((e) => {

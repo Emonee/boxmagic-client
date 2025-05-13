@@ -1,7 +1,7 @@
-import { useContext } from "preact/hooks";
+import { useContext, useState } from "preact/hooks";
 import { JsonBinDataContext } from "../../context/JsonBinDataContext";
 import { daysMapper } from "../../consts/daysMapper";
-import { Day } from "../../types/jsonBin";
+import type { Day, Class } from "../../types/jsonBin";
 import ClassInputs from "./ClassInputs";
 
 import { Fragment } from "preact";
@@ -10,9 +10,20 @@ export default function Days() {
   const {
     data: { classesByDay },
   } = useContext(JsonBinDataContext);
-  const days = Object.entries(classesByDay);
+  const dayEntries = Object.entries(classesByDay);
+  const [daysToRemove, setDaysToRemove] = useState<
+    { day: Day; classId: number }[]
+  >([]);
+  const days = dayEntries.map<[Day, Class[]]>(([day, classes]) => [
+    +day as Day,
+    classes.filter(
+      (c) =>
+        !daysToRemove.some((dtr) => dtr.day === +day && dtr.classId === c.id)
+    ),
+  ]);
+
   return days
-    .toSorted((a, b) => (b[0] === "0" ? -1 : a[0].localeCompare(b[0]))) // Make sunday last
+    .toSorted((a, b) => (b[0] === 0 ? -1 : a[0] - b[0])) // Make sunday last
     .map(
       ([day, classes]) =>
         !!classes.length && (
@@ -26,6 +37,25 @@ export default function Days() {
                   day={+day as Day}
                   boxMagicClass={c}
                   index={i}
+                  onRemove={() => {
+                    if (
+                      !confirm(
+                        `Are you sure you want to remove this class?\n${
+                          c.name
+                        }, ${daysMapper[day]} ${c.hour
+                          .toString()
+                          .padStart(2, "0")}:${c.minute
+                          .toString()
+                          .padStart(2, "0")} hrs`
+                      )
+                    )
+                      return;
+
+                    setDaysToRemove((prev) => [
+                      ...prev,
+                      { day: +day as Day, classId: c.id },
+                    ]);
+                  }}
                 />
               ))}
           </Fragment>

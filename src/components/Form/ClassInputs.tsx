@@ -6,9 +6,15 @@ type Props = {
   index: number;
   day: Day;
   boxMagicClass: Class;
+  onRemove: () => void;
 };
 
-export default function ClassInput({ day, boxMagicClass, index }: Props) {
+export default function ClassInput({
+  day,
+  boxMagicClass,
+  index,
+  onRemove,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -23,22 +29,7 @@ export default function ClassInput({ day, boxMagicClass, index }: Props) {
       <button
         type="button"
         style={{ margin: 0, padding: "0.25rem 0.5rem" }}
-        onClick={() => {
-          if (
-            !confirm(
-              `Are you sure you want to remove this class?\n${
-                boxMagicClass.name
-              }, ${daysMapper[day]} ${boxMagicClass.hour
-                .toString()
-                .padStart(2, "0")}:${boxMagicClass.minute
-                .toString()
-                .padStart(2, "0")} hrs`
-            )
-          )
-            return;
-
-          containerRef.current?.remove();
-        }}
+        onClick={onRemove}
       >
         Remove
       </button>
